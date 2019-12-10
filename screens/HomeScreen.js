@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Button
 } from 'react-native';
 
 import CardFlip from "react-native-card-flip";
@@ -20,10 +21,10 @@ export default class HomeScreen extends React.Component {
       ingredients: ""
     };
   }
-    
+  
   render(){
-      const ingredients = ["2 cups whole milk", "1/2 cup vegetable oil", "1/2 cup sugar", "1 pkg active dry yeast", "4 1/2 cups flour", "1/2 tsp baking powder", "1/2 tsp baking soda", "1/2 tablespoon salt", "1 cup melted butter", "1/8 cup ground cinnamon", "1 cup sugar"]
-      0
+    const { navigate } = this.props.navigation;
+    const ingredients = ["2 cups whole milk", "1/2 cup vegetable oil", "1/2 cup sugar", "1 pkg active dry yeast", "4 1/2 cups flour", "1/2 tsp baking powder", "1/2 tsp baking soda", "1/2 tablespoon salt", "1 cup melted butter", "1/8 cup ground cinnamon", "1 cup sugar"];
     return (
         <>
             <CardFlip style={styles.container} ref={(card) => this.card = card}>
@@ -59,6 +60,10 @@ export default class HomeScreen extends React.Component {
                     </View>
                     <View style={styles.blueLines}>
                     </View>
+                  <Button
+                    title="Add Recipe"
+                    onPress={() => navigate("AddRecipe")}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.card} onPress={() => this.card.flip()}>
                     <Text style={styles.directionText}>

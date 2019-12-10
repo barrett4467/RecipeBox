@@ -1,5 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
+
 import {
   Image,
   Platform,
@@ -12,11 +13,11 @@ import {
   View,
   Dimensions
 } from 'react-native';
-import FlipCard from "react-native-flip-card";
+import CardFlip from "react-native-card-flip";
 
 import { MonoText } from '../components/StyledText';
 
-import { Stitch, RemoteMongoClient, BSON} from "mongodb-stitch-react-native-sdk";
+import { Stitch, RemoteMongoClient, BSON, AnonymousCredential} from "mongodb-stitch-react-native-sdk";
 const MongoDb = require("mongodb-stitch-react-native-services-mongodb-remote");
 
 export default class HomeScreen extends React.Component {
@@ -25,34 +26,42 @@ export default class HomeScreen extends React.Component {
     this.state = {
       value: false,
       recipeName: "",
-      ingredients: ""
+      ingredients: "",
+      directions: ""
     };
   }
   handleSubmit = () => {
     Keyboard.dismiss();
+    const newItem = {
+      "recipeName": "Test",
+      "ingredients": ["testing1", "testing2"],
+      "directions": "Testing to see if works"
+    };
+    console.log(this.state.recipeName);
+    console.log(this.state.ingredients);
+    console.log(this.state.directions);
+    
     const stitchAppClient = Stitch.defaultAppClient;
     const mongoClient = stitchAppClient.getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
+      RemoteMongoClient.factory
     );
-    console.log(RemoteMongoClient.factory)
-  
+    
+    // console.log(RemoteMongoClient.factory)
+    
     const recipeCollection = mongoClient.db("recipeBox").collection("recipes");
-    
-    const newItem = {
-      "name": "Plastic Bricks",
-      "quantity": 10,
-      "category": "toys",
-      "reviews": [{ "username": "legolover", "comment": "These are awesome!" }]
-    };
-    
-    recipeCollection.insertOne(newItem)
-      .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
-      .catch(err => console.error(`Failed to insert item: ${err}`))
-    // const db = mongoClient.db("recipeBox");
+    // recipeCollection.find({})
+    //   .then(results => console.log(`results:`, results))
+    //   .catch(console.error)
+    // console.log(recipeCollection);
+    // recipeCollection.insertOne(newItem)
+    //   .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
+    //   .catch(err => console.error(`Failed to insert item: ${err}`))
+    const db = mongoClient.db("recipeBox");
     // const recipes = db.collection("recipes");
+   
 
-    // console.log(db);
+
+    console.log(db.collection("recipes").read);
 
     // if (this.state.recipeName != "" && this.state.ingredients != ""){
     //   recipes
@@ -73,8 +82,8 @@ export default class HomeScreen extends React.Component {
   };
   render(){
     return (
-      <FlipCard style={styles.contentContainer}>
-        <View style={styles.face}>
+      <TouchableOpacity style={styles.contentContainer}>
+        <View>
             <TextInput 
               style={{fontSize: 30}} 
               placeholder="Enter Recipe Name"
@@ -89,14 +98,18 @@ export default class HomeScreen extends React.Component {
               value={this.state.text}
               onSubmitEditing={() => this.handleSubmit()}
               />
+              <TextInput 
+              style={{fontSize: 30}} 
+              placeholder="Directions"
+              onChangeText={directions => this.setState({ directions })}
+              value={this.state.text}
+              onSubmitEditing={() => this.handleSubmit()}
+              />
               <TouchableOpacity onPress={() => this.handleSubmit()}>
                   <Text>Submit</Text>
               </TouchableOpacity>
         </View>
-        <View style={styles.back}>
-          <Text style={{fontSize: 24}}>Directions: </Text>
-        </View>
-      </FlipCard>
+      </TouchableOpacity>
     );
   }
 }

@@ -2,8 +2,9 @@ import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset } from "expo";
 import AppNavigator from "./navigation/AppNavigator";
-import { Stitch, AnonymousCredential } from "mongodb-stitch-react-native-sdk";
-import { ExpoConfigView } from "@expo/samples";
+import { Stitch, AnonymousCredential, UserPasswordCredential } from "mongodb-stitch-react-native-sdk";
+
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -58,8 +59,11 @@ export default class App extends React.Component {
     Stitch.initializeDefaultAppClient("recipebox-ooeij")
       .then(client => {
         this.setState({ client })
+        const email = "barrett4467@gmail.com";
+        const password = "password"
+        const credential = new UserPasswordCredential(email, password);
         this.state.client.auth
-          .loginWithCredential(new AnonymousCredential())
+          .loginWithCredential(credential)
           .then(user => {
             console.log(`Successfully logged in as user ${user.id}`);
             this.setState({ currentUserId: user.id });
