@@ -14,13 +14,22 @@ export default class WelcomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (
         <View style={styles.container}>
+          <View style={styles.content}>
             <Text style={styles.text}>Welcome to Recipe Box!</Text>
-            <TouchableOpacity onPress={() => navigate("Home")}>
-                <Text style={styles.text}>View your recipes!</Text>
+            <Text style={styles.bodyText}>Choose an option to get started</Text>
+            <TouchableOpacity 
+              onPress={() => navigate("Home")}
+              style={styles.button}
+              >
+                <Text style={styles.text}>View recipes</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate("AddRecipe")}>
-                <Text style={styles.text}>Add a new recipe!</Text>
+            <TouchableOpacity 
+              onPress={() => navigate("AddRecipe")}
+              style={styles.button}
+              >
+                <Text style={styles.text}>New recipe</Text>
             </TouchableOpacity>
+          </View>
             
         </View>
     );
@@ -29,11 +38,28 @@ export default class WelcomeScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        marginTop: "15%"
+      height: "100%",
+      backgroundColor: "#91a8a4"
     },
+    content: {
+      marginTop: "15%",
+      backgroundColor: "#fff",
+      marginRight: "2%",
+      marginLeft: "2%",
+      marginTop: "30%"
+    },  
     text: {
         fontSize: 30
+    },
+    bodyText: {
+      fontSize: 20
+    },
+    button: {
+      backgroundColor: "#fff",
+      height: 45,
+      borderWidth: 2,
+      width: 200,
+      borderColor: "black"
     }
 })
 WelcomeScreen.navigationOptions = {

@@ -11,7 +11,8 @@ import {
   Keyboard,
   TouchableOpacity,
   View,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import CardFlip from "react-native-card-flip";
 
@@ -24,49 +25,66 @@ export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      count: [],
       value: false,
       recipeName: "",
-      ingredients: [],
+      ingredients: "",
       directions: ""
     };
   }
   handleSubmit = () => {
-    Keyboard.dismiss();
-    const newItem = {
-      "recipeName": this.state.recipeName,
-      "ingredients": this.state.ingredients,
-      "directions": this.state.directions
-    };
-    console.log(this.state.recipeName);
-    console.log(this.state.ingredients);
-    console.log(this.state.directions);
+    if(this.state.recipeName.length <= 30 && this.state.ingredients != "" && this.state.directions != ""){
+      Keyboard.dismiss();
+      const newItem = {
+        "recipeName": this.state.recipeName,
+        "ingredients": this.state.ingredients,
+        "directions": this.state.directions
+      };
+      // console.log(this.state.recipeName);
+      // console.log(this.state.ingredients);
+      // console.log(this.state.directions);
+      
+      const stitchAppClient = Stitch.defaultAppClient;
+      const mongoClient = stitchAppClient.getServiceClient(
+        RemoteMongoClient.factory,
+        "mongodb-atlas"
+      );
+      Stitch.getAppClient("recipebox-ubscl").getServiceClient(
+        RemoteMongoClient.factory,
+        "mongodb-atlas"
+      );
+      const recipes = mongoClient.db("box").collection("recipes");
+      const addRecipe = async recipe => {
+        const rec = { recipe, owner_id: "5df034421327d592e12bec7a"}
+        const item = await recipes.insertOne(rec);
+        // console.log(item);
+      };
+      addRecipe(newItem);
+
+
+      const { navigate } = this.props.navigation;
+        this.setState({
+          recipeName: "",
+          ingredients: "",
+          directions: ""
+        });
+      navigate("Home")
+    } else {
+      Alert.alert(
+        "Incorrect Format!",
+        "Your Recipe Name must be below 30 characters. We also require the ingredient and direction section to be filled out!",
+        [
+          {text: "Try Again", onPress: () => console.log("Try Again Pressed")}
+        ]
+      )
+    }
     
-    const stitchAppClient = Stitch.defaultAppClient;
-    const mongoClient = stitchAppClient.getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
-    );
-    Stitch.getAppClient("recipebox-ubscl").getServiceClient(
-      RemoteMongoClient.factory,
-      "mongodb-atlas"
-    );
-    const recipes = mongoClient.db("box").collection("recipes");
-    const addRecipe = async recipe => {
-      const rec = { recipe, owner_id: "5df034421327d592e12bec7a"}
-      const item = await recipes.insertOne(rec);
-      console.log(item);
-    };
-    addRecipe(newItem);
-    this.setState({
-      recipeName: "",
-      ingredients: "",
-      directions: ""
-    });
   };
   render(){
     return (
-      <TouchableOpacity style={styles.contentContainer}>
-        <View>
+      <>
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
             <TextInput 
               style={{fontSize: 30}} 
               placeholder="Enter Recipe Name"
@@ -77,10 +95,12 @@ export default class HomeScreen extends React.Component {
               <TextInput 
               style={{fontSize: 30}} 
               placeholder="Enter Ingredients"
-              onChangeText={ingredients => this.setState({ ingredients: ingredients.split(", ") })}
+              onChangeText={ingredients => this.setState({ ingredients: ingredients })}
               value={this.state.ingredients}
+              multiline={true}
+              underlineColorAndroid="red"
               onSubmitEditing={() => this.handleSubmit()}
-              />
+              /> 
               <TextInput 
               style={{fontSize: 30}} 
               placeholder="Directions"
@@ -92,7 +112,9 @@ export default class HomeScreen extends React.Component {
                   <Text>Submit</Text>
               </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+
+      </View>
+        </>
     );
   }
 }
@@ -105,21 +127,15 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#91a8a4',
   },
   contentContainer: {
-    marginTop: "15%",
+    marginTop: "25%",
     marginRight: "2%",
     marginLeft: "2%",
     borderWidth: 2,
-    borderColor: "black"
-  },
-  recipe: {
-    marginTop: "15%",
-    height: "100%",
-    backgroundColor: "lightgrey",
-    borderWidth: 2,
-    borderColor: "#eee"
+    borderColor: "black",
+    backgroundColor: "#fff"
   }
 
 });
