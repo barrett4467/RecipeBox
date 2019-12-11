@@ -117,6 +117,7 @@ export default class HomeScreen extends React.Component {
                         placeholder="Directions"
                         onChangeText={directions => this.setState({ directions })}
                         value={this.state.directions}
+                        multiline={true}
                         onSubmitEditing={() => this.handleSubmit()}
                         />
                         <View style={{flexDirection: "row"}}>
