@@ -41,9 +41,6 @@ export default class HomeScreen extends React.Component {
         "ingredients": this.state.ingredients,
         "directions": this.state.directions
       };
-      // console.log(this.state.recipeName);
-      // console.log(this.state.ingredients);
-      // console.log(this.state.directions);
       
       const stitchAppClient = Stitch.defaultAppClient;
       const mongoClient = stitchAppClient.getServiceClient(
@@ -56,7 +53,7 @@ export default class HomeScreen extends React.Component {
       );
       const recipes = mongoClient.db("box").collection("recipes");
       const addRecipe = async recipe => {
-        const rec = { recipe, owner_id: "5df034421327d592e12bec7a"}
+        const rec = { recipe, owner_id: "5df1569ad7648c0d6cbc6a8c"}
         const item = await recipes.insertOne(rec);
         // console.log(item);
       };
@@ -129,6 +126,7 @@ export default class HomeScreen extends React.Component {
                           >
                             <TouchableOpacity 
                               onPress={() => this.handleSubmit()}
+                              style={{alignItems: "center"}}
                               >
                                 <Text style={styles.buttonText}>Submit</Text>
                             </TouchableOpacity>
@@ -186,6 +184,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 14,
+    alignItems: "center",
     left: 210,
     bottom: 10,
     backgroundColor: "#fff",

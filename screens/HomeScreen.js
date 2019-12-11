@@ -11,7 +11,6 @@ import { Stitch, RemoteMongoClient, BSON} from "mongodb-stitch-react-native-sdk"
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
 export default class HomeScreen extends React.Component {
   constructor(props){
     super(props);
@@ -97,22 +96,26 @@ export default class HomeScreen extends React.Component {
       );
     } else {
       return(
-        <ScrollView style={styles.container}>
-          <View style={styles.noRecipeCard}>
-            <LinearGradient
-              colors={["#ff8981", "#ffb18d"]}
-            >
+          <LinearGradient
+            colors={["#ff8981", "#ffb18d"]}
+            style={{ flex: 1, height: "100%" }}
+          >
+            <View style={styles.noRecipeCard}>
               <View style={styles.noRecipe}>
                 <Text style={styles.cardText}>There doesn't appear to be any recipes</Text>
                 <TouchableOpacity 
                   onPress={() => this.handleAdd()}
                   style={styles.add}>
-                  <Text style={styles.cardText}>Add Recipe</Text>
+                    <LinearGradient
+                      colors={["#ff8981", "#ffb18d"]}
+                      style={styles.button}
+                    >
+                      <Text style={styles.buttonText}>Add Recipe</Text>
+                    </LinearGradient>
                 </TouchableOpacity>
               </View>
-            </LinearGradient>
-          </View>
-        </ScrollView>
+            </View>
+          </LinearGradient>
       )
     }
   }
@@ -131,7 +134,8 @@ const styles = StyleSheet.create({
     marginRight: "2%",
     marginLeft: "2%",
     borderRadius: 14,
-    padding: "2%"
+    padding: "2%",
+    backgroundColor: "#fff"
   },
   container: {
     flex: 1,
@@ -151,7 +155,19 @@ const styles = StyleSheet.create({
     padding: "2%"
   },
   cardText: {
-    fontSize: 30,
-    color: "#fff"
+    fontSize: 30
   },
+  button: {
+    borderRadius: 14,
+    marginTop: "2%",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    height: 45,
+    width: 175
+  },
+  buttonText: {
+    padding: "4%",
+    color: "#fff",
+    fontSize: 24
+  }
 });

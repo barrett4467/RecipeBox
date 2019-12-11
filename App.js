@@ -10,7 +10,8 @@ export default class App extends React.Component {
     this.state = {
       currentUserId: undefined,
       client: undefined,
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      userId: undefined
     };
     this._loadClient = this._loadClient.bind(this);
   }
@@ -43,6 +44,8 @@ export default class App extends React.Component {
         const email = "barrett4467@gmail.com";
         const password = "password"
         const credential = new AnonymousCredential();
+
+        console.log(this.state.client.auth.user.id);
         this.state.client.auth
           .loginWithCredential(credential)
           .then(user => {
