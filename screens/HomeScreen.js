@@ -4,17 +4,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  Button,
-  Dimensions
+  View
 } from 'react-native';
 
-import CardFlip from "react-native-card-flip";
 import { Stitch, RemoteMongoClient, BSON} from "mongodb-stitch-react-native-sdk";
 import { ScrollView } from 'react-native-gesture-handler';
-const MongoDb = require("mongodb-stitch-react-native-services-mongodb-remote");
-import ViewRecipe from "./ViewRecipe";
-import ViewRecipeScreen from './ViewRecipe';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 export default class HomeScreen extends React.Component {
   constructor(props){
@@ -78,16 +74,21 @@ export default class HomeScreen extends React.Component {
               {this.state.recipes.map(recipe => {
                 console.log(recipe.recipe.recipeName)
                 return(
-                  <TouchableOpacity
-                    onPress={() => this.handlePress(recipe)}
+                  <LinearGradient
+                    colors={["#ff8981", "#ffb18d"]}
                     style={styles.card}
-                    key={recipe._id}
                   >
-                    <Text 
+                    <TouchableOpacity
+                      onPress={() => this.handlePress(recipe)}
                       key={recipe._id}
-                      style={styles.cardText}
-                    >{recipe.recipe.recipeName}</Text>
-                  </TouchableOpacity>
+                    >
+                      <Text 
+                        key={recipe._id}
+                        style={styles.cardText}
+                      >{recipe.recipe.recipeName}</Text>
+                    </TouchableOpacity>
+
+                  </LinearGradient>
                 )
               })}
           </View>
@@ -98,14 +99,18 @@ export default class HomeScreen extends React.Component {
       return(
         <ScrollView style={styles.container}>
           <View style={styles.noRecipeCard}>
-            <View style={styles.noRecipe}>
-              <Text style={styles.cardText}>There doesn't appear to be any recipes</Text>
-              <TouchableOpacity 
-                onPress={() => this.handleAdd()}
-                style={styles.add}>
-                <Text style={styles.cardText}>Add Recipe</Text>
-              </TouchableOpacity>
-            </View>
+            <LinearGradient
+              colors={["#ff8981", "#ffb18d"]}
+            >
+              <View style={styles.noRecipe}>
+                <Text style={styles.cardText}>There doesn't appear to be any recipes</Text>
+                <TouchableOpacity 
+                  onPress={() => this.handleAdd()}
+                  style={styles.add}>
+                  <Text style={styles.cardText}>Add Recipe</Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
           </View>
         </ScrollView>
       )
@@ -113,17 +118,11 @@ export default class HomeScreen extends React.Component {
   }
     
 }
-
 HomeScreen.navigationOptions = {
   header: null,
   cardStyle: { backgroundColor: "grey"}
 };
-
-
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: "red"
-  },
   noRecipe: {
     marginTop: "10%"
   },
@@ -132,20 +131,16 @@ const styles = StyleSheet.create({
     marginRight: "2%",
     marginLeft: "2%",
     borderRadius: 14,
-    borderWidth: 2,
-    borderColor: "black",
-    backgroundColor: "#fff",
-    borderRadius: 2,
     padding: "2%"
   },
   container: {
     flex: 1,
-    backgroundColor: "#91a8a4"
+    backgroundColor: "#fff"
   },
   add: {
     fontSize: 25,
-    borderColor: "black",
-    borderWidth: 2,
+    borderRadius: 6,
+    backgroundColor: "#fff",
     width: 200
   },
   card: {
@@ -153,14 +148,10 @@ const styles = StyleSheet.create({
     marginRight: "2%",
     marginLeft: "2%",
     borderRadius: 14,
-    borderWidth: 2,
-    borderColor: "black",
-    backgroundColor: "#fff",
-    borderRadius: 2,
     padding: "2%"
   },
   cardText: {
-    fontSize: 30
+    fontSize: 30,
+    color: "#fff"
   },
-
 });

@@ -7,59 +7,85 @@ import {
   View,
   Button
 } from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default class WelcomeScreen extends React.Component {
   render(){
     const { navigate } = this.props.navigation;
     return (
-        <View style={styles.container}>
-          <View style={styles.content}>
-            <Text style={styles.text}>Welcome to Recipe Box!</Text>
-            <Text style={styles.bodyText}>Choose an option to get started</Text>
+      <LinearGradient
+        colors={["#ff8981", "#ffb18d"]}
+        style={{ height: "100%", flex: 1 }}
+      >
+        <View style={styles.content}>
+          <Text style={styles.text}>Welcome to Recipe Box!</Text>
+          <Text style={styles.bodyText}>Recipe Box is designed to be a virtual recipe holder. Go ahead and add your favorite recipes to get started!</Text>
+          <View style={{flexDirection: "row", justifyContent: "space-around"}}>
             <TouchableOpacity 
               onPress={() => navigate("Home")}
               style={styles.button}
               >
-                <Text style={styles.text}>View recipes</Text>
+                <LinearGradient
+                  colors={["#ff8981", "#ffb18d"]}
+                  style={{ height: "100%", borderRadius: 6 }}
+                >
+                  <Text style={styles.buttonText}>View recipes</Text>
+                </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity 
               onPress={() => navigate("AddRecipe")}
               style={styles.button}
               >
-                <Text style={styles.text}>New recipe</Text>
+                <LinearGradient
+                  colors={["#ff8981", "#ffb18d"]}
+                  style={{ height: "100%", borderRadius: 6 }}
+                >
+                  <Text style={styles.buttonText}>New Recipe</Text>
+                </LinearGradient>
             </TouchableOpacity>
           </View>
-            
         </View>
+      </LinearGradient>
     );
   }
     
 }
 const styles = StyleSheet.create({
     container: {
-      height: "100%",
-      backgroundColor: "#91a8a4"
+      height: "100%"
     },
     content: {
+      display: "flex",
+      flexDirection: "column",
       marginTop: "15%",
       backgroundColor: "#fff",
+      borderRadius: 14,
       marginRight: "2%",
       marginLeft: "2%",
-      marginTop: "30%"
+      marginTop: "30%",
+      height: 500
     },  
     text: {
-        fontSize: 30
+      justifyContent: "flex-start",
+      padding: "4%",
+      fontSize: 45
     },
     bodyText: {
-      fontSize: 20
+      padding: "4%",
+      justifyContent: "flex-start",
+      fontSize: 30
     },
     button: {
+      borderRadius: 14,
+      top: 50,
       backgroundColor: "#fff",
       height: 45,
-      borderWidth: 2,
-      width: 200,
-      borderColor: "black"
+      width: 175
+    },
+    buttonText: {
+      padding: "4%",
+      color: "#fff",
+      fontSize: 24
     }
 })
 WelcomeScreen.navigationOptions = {
