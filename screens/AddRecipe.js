@@ -26,16 +26,16 @@ export default class HomeScreen extends React.Component {
     this.state = {
       value: false,
       recipeName: "",
-      ingredients: "",
+      ingredients: [],
       directions: ""
     };
   }
   handleSubmit = () => {
     Keyboard.dismiss();
     const newItem = {
-      "recipeName": "Test",
-      "ingredients": ["testing1", "testing2"],
-      "directions": "Testing to see if works"
+      "recipeName": this.state.recipeName,
+      "ingredients": this.state.ingredients,
+      "directions": this.state.directions
     };
     console.log(this.state.recipeName);
     console.log(this.state.ingredients);
@@ -43,42 +43,25 @@ export default class HomeScreen extends React.Component {
     
     const stitchAppClient = Stitch.defaultAppClient;
     const mongoClient = stitchAppClient.getServiceClient(
-      RemoteMongoClient.factory
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
     );
-    
-    // console.log(RemoteMongoClient.factory)
-    
-    const recipeCollection = mongoClient.db("recipeBox").collection("recipes");
-    // recipeCollection.find({})
-    //   .then(results => console.log(`results:`, results))
-    //   .catch(console.error)
-    // console.log(recipeCollection);
-    // recipeCollection.insertOne(newItem)
-    //   .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
-    //   .catch(err => console.error(`Failed to insert item: ${err}`))
-    const db = mongoClient.db("recipeBox");
-    // const recipes = db.collection("recipes");
-   
-
-
-    console.log(db.collection("recipes").read);
-
-    // if (this.state.recipeName != "" && this.state.ingredients != ""){
-    //   recipes
-    //     .insertOne({
-    //       status: "new",
-    //       recipeName: this.state.recipeName,
-    //       ingredients: this.state.ingredients,
-    //       date: new Date()
-    //     })
-    //     .then(() => {
-    //       this.setState({ value: !this.state.value })
-    //       this.setState({ text: "" });
-    //     })
-    //     .catch(err => {
-    //       console.warn(err);
-    //     });
-    // }
+    Stitch.getAppClient("recipebox-ubscl").getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    const recipes = mongoClient.db("box").collection("recipes");
+    const addRecipe = async recipe => {
+      const rec = { recipe, owner_id: "5df034421327d592e12bec7a"}
+      const item = await recipes.insertOne(rec);
+      console.log(item);
+    };
+    addRecipe(newItem);
+    this.setState({
+      recipeName: "",
+      ingredients: "",
+      directions: ""
+    });
   };
   render(){
     return (
@@ -88,21 +71,21 @@ export default class HomeScreen extends React.Component {
               style={{fontSize: 30}} 
               placeholder="Enter Recipe Name"
               onChangeText={recipeName => this.setState({ recipeName })}
-              value={this.state.text}
+              value={this.state.recipeName}
               onSubmitEditing={() => this.handleSubmit()}
               />
               <TextInput 
               style={{fontSize: 30}} 
               placeholder="Enter Ingredients"
-              onChangeText={ingredients => this.setState({ ingredients })}
-              value={this.state.text}
+              onChangeText={ingredients => this.setState({ ingredients: ingredients.split(", ") })}
+              value={this.state.ingredients}
               onSubmitEditing={() => this.handleSubmit()}
               />
               <TextInput 
               style={{fontSize: 30}} 
               placeholder="Directions"
               onChangeText={directions => this.setState({ directions })}
-              value={this.state.text}
+              value={this.state.directions}
               onSubmitEditing={() => this.handleSubmit()}
               />
               <TouchableOpacity onPress={() => this.handleSubmit()}>

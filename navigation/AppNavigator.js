@@ -4,9 +4,9 @@ import { createStackNavigator } from "react-navigation-stack";
 
 import Home from "../screens/HomeScreen";
 import AddRecipe from "../screens/AddRecipe";
-
-
+import WelcomeScreen from "../screens/Welcome";
 const MainNavigator = createStackNavigator({
+  Welcome: {screen: WelcomeScreen},
   Home: {screen: Home},
   AddRecipe: {screen: AddRecipe}
 });
