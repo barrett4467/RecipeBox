@@ -12,6 +12,7 @@ import {
 import CardFlip from "react-native-card-flip";
 import uuid from "react-native-uuid";
 import { Stitch, RemoteMongoClient, BSON} from "mongodb-stitch-react-native-sdk";
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 export default class ViewRecipeScreen extends React.Component {
@@ -71,7 +72,13 @@ export default class ViewRecipeScreen extends React.Component {
         
         return (
         <>
-            <CardFlip style={styles.container} ref={(card) => this.card = card}>
+        {/* <View>
+          <LinearGradient
+            colors={["#ff8981", "#ffb18d"]}
+          > */}
+            <CardFlip 
+              style={styles.container}
+              ref={(card) => this.card = card}>
             <TouchableOpacity style={styles.recipeCard} onPress={() => this.card.flip()}>
                 <View>
                     <Text style={styles.titleText}>{navigation.getParam("recipeName")}</Text>
@@ -107,6 +114,9 @@ export default class ViewRecipeScreen extends React.Component {
                 </TouchableOpacity> */}
             </TouchableOpacity>
         </CardFlip> 
+
+          {/* </LinearGradient>
+        </View> */}
         </>
     );
   }
@@ -116,7 +126,7 @@ export default class ViewRecipeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#91a8a4"
+      backgroundColor: "#ffb18d"
     },
     recipeCard: {
       margin: "2%",

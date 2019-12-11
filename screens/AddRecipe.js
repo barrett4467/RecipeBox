@@ -12,13 +12,14 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-  Alert
+  Alert,
+  KeyboardAvoidingView,
+  SafeAreaView
 } from 'react-native';
 import CardFlip from "react-native-card-flip";
 
-import { MonoText } from '../components/StyledText';
-
 import { Stitch, RemoteMongoClient, BSON, AnonymousCredential} from "mongodb-stitch-react-native-sdk";
+import { LinearGradient } from 'expo-linear-gradient';
 const MongoDb = require("mongodb-stitch-react-native-services-mongodb-remote");
 
 export default class HomeScreen extends React.Component {
@@ -82,39 +83,67 @@ export default class HomeScreen extends React.Component {
   };
   render(){
     return (
-      <>
-      <View style={styles.container}>
-        <View style={styles.contentContainer}>
-            <TextInput 
-              style={{fontSize: 30}} 
-              placeholder="Enter Recipe Name"
-              onChangeText={recipeName => this.setState({ recipeName })}
-              value={this.state.recipeName}
-              onSubmitEditing={() => this.handleSubmit()}
-              />
-              <TextInput 
-              style={{fontSize: 30}} 
-              placeholder="Enter Ingredients"
-              onChangeText={ingredients => this.setState({ ingredients: ingredients })}
-              value={this.state.ingredients}
-              multiline={true}
-              underlineColorAndroid="red"
-              onSubmitEditing={() => this.handleSubmit()}
-              /> 
-              <TextInput 
-              style={{fontSize: 30}} 
-              placeholder="Directions"
-              onChangeText={directions => this.setState({ directions })}
-              value={this.state.directions}
-              onSubmitEditing={() => this.handleSubmit()}
-              />
-              <TouchableOpacity onPress={() => this.handleSubmit()}>
-                  <Text>Submit</Text>
-              </TouchableOpacity>
-        </View>
+      
+      <LinearGradient
+        colors={["#ff8981", "#ffb18d"]}
+        style={styles.container}
+      >
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior="padding"
+            enabled
+          >
+              <ScrollView >
+                <View style={styles.inner}>
+                  <View style={styles.content}>
+                    <Text style={styles.text}>
+                      Add a recipe! 
+                    </Text>
+                    <Text style={styles.bodyText}>Hit enter when done with an ingredient to add the next!</Text>
+                      <TextInput 
+                        style={styles.inputText} 
+                        placeholder="Enter Recipe Name"
+                        onChangeText={recipeName => this.setState({ recipeName })}
+                        value={this.state.recipeName}
+                        onSubmitEditing={() => this.handleSubmit()}
+                        />
+                        <TextInput 
+                        style={styles.inputText} 
+                        placeholder="Enter Ingredients"
+                        onChangeText={ingredients => this.setState({ ingredients: ingredients })}
+                        value={this.state.ingredients}
+                        multiline={true}
+                        onSubmitEditing={() => this.handleSubmit()}
+                        /> 
+                        <TextInput 
+                        style={styles.inputText} 
+                        placeholder="Directions"
+                        onChangeText={directions => this.setState({ directions })}
+                        value={this.state.directions}
+                        onSubmitEditing={() => this.handleSubmit()}
+                        />
+                        <View style={{flexDirection: "row"}}>
+                          <LinearGradient
+                            colors={["#ff8981", "#ffb18d"]}
+                            style={styles.button}
+                          >
+                            <TouchableOpacity 
+                              onPress={() => this.handleSubmit()}
+                              >
+                                <Text style={styles.buttonText}>Submit</Text>
+                            </TouchableOpacity>
 
-      </View>
-        </>
+                          </LinearGradient>
+
+                        </View>
+                  </View>
+
+                </View>
+              </ScrollView>
+          </KeyboardAvoidingView>
+
+          </LinearGradient>
+      
     );
   }
 }
@@ -126,16 +155,47 @@ HomeScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#91a8a4',
+    flex: 1
   },
-  contentContainer: {
-    marginTop: "25%",
+  inner: {
+    justifyContent: "flex-end"
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "15%",
+    backgroundColor: "#fff",
+    borderRadius: 14,
     marginRight: "2%",
     marginLeft: "2%",
-    borderWidth: 2,
-    borderColor: "black",
-    backgroundColor: "#fff"
+    marginTop: "30%"
+  },  
+  text: {
+    justifyContent: "flex-start",
+    padding: "4%",
+    fontSize: 45
+  },
+  bodyText: {
+    padding: "4%",
+    justifyContent: "flex-start",
+    fontSize: 30
+  },
+  inputText: {
+    padding: "4%",
+    fontSize: 30
+  },
+  button: {
+    borderRadius: 14,
+    left: 210,
+    bottom: 10,
+    backgroundColor: "#fff",
+    height: 45,
+    width: 175
+  },
+  buttonText: {
+    padding: "4%",
+    color: "#fff",
+    fontSize: 24
   }
 
 });
