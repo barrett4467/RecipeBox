@@ -9,6 +9,7 @@
       "android",
       "web"
     ],
+    "description": "Recipe Box is way to virtually store your favorite recipes so you can access your recipes wherever you are.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
