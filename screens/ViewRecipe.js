@@ -13,6 +13,7 @@ import CardFlip from "react-native-card-flip";
 import uuid from "react-native-uuid";
 import { Stitch, RemoteMongoClient, BSON} from "mongodb-stitch-react-native-sdk";
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default class ViewRecipeScreen extends React.Component {
@@ -80,30 +81,13 @@ export default class ViewRecipeScreen extends React.Component {
               style={styles.container}
               ref={(card) => this.card = card}>
             <TouchableOpacity style={styles.recipeCard} onPress={() => this.card.flip()}>
-                <View>
-                    <Text style={styles.titleText}>{navigation.getParam("recipeName")}</Text>
-                </View>
-                <View style={styles.blueLines}>
-                    {ingredientsArr.map(item => <Text key={uuid.v1()}style={styles.bodyText}>{item}</Text>)}
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
-                <View style={styles.blueLines}>
-                </View>
+                  <View>
+                      <Text style={styles.titleText}>{navigation.getParam("recipeName")}</Text>
+                  </View>
+                  <View>
+                      {ingredientsArr.map(item => <Text key={uuid.v1()}style={styles.bodyText}>{item}</Text>)}
+                  </View>
+
             </TouchableOpacity>
             <TouchableOpacity style={styles.recipeCard} onPress={() => this.card.flip()}>
                 <Text style={styles.directionText}>
@@ -130,7 +114,7 @@ const styles = StyleSheet.create({
     },
     recipeCard: {
       margin: "2%",
-      height: "80%",
+      height: "90%",
       borderWidth: 2,
       borderColor: "black",
       borderRadius: 14,
@@ -151,6 +135,7 @@ const styles = StyleSheet.create({
       marginLeft: "1%",
       marginRight: "1%",
       fontSize: 30,
+      lineHeight: 35
     },
     directionText:{
       marginLeft: "1%",
@@ -158,7 +143,6 @@ const styles = StyleSheet.create({
       fontSize: 20
     },
     blueLines: {
-      height: 45,
       borderTopWidth: 0,
       borderRightWidth: 0,
       borderLeftWidth: 0,
